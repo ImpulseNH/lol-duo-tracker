@@ -1,0 +1,93 @@
+/* Match history container */
+.match-history-container {
+    width: 95%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 15px;
+    background-color: #050E1A;
+}
+
+.match-card:hover {
+    transition: transform 0.2s;
+    transform: translateY(-3px);
+}
+
+/* Match information */
+.match-info h5 {
+    font-weight: 700;
+    color: #A3C9E9;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 1.1rem;
+}
+
+/* Match time */
+.match-time {
+    font-size: 0.85rem;
+    color: #8EACC5;
+    margin-top: 3px;
+    font-style: italic;
+}
+
+/* Match header */
+.match-header {
+    background-color: #151527;
+    border-left: 5px solid #16213e;
+    color: #e0e0e0;
+}
+
+/* Team colors */
+.team-blue {
+    color: #0099ff;
+}
+
+.team-red {
+    color: #ff4141;
+}
+
+.winner_team {
+    color: rgba(128, 255, 128, 0.527)
+}
+
+.loser_team {
+    color: #ff747469;
+}
+
+/* KDA information */
+.kda-text {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #E0E0E0;
+}
+
+/* Highlight searched players */
+.table-active {
+    font-weight: bold;
+}
+
+/* Details table */
+.table thead th {
+    background-color: #050A14;
+    color: #C4E0FF;
+    border-color: #071020;
+    font-weight: 600;
+}
+
+.table tbody td {
+    background-color: #030810;
+    border-color: #071020;
+    color: #c2c2c2;
+}
+
+/* Details button */
+.match-header .btn {
+    min-width: 120px;
+    background-color: #0A2040;
+    border-color: #0A2040;
+    color: #E0E0E0;
+}
+
+.match-header .btn:hover {
+    background-color: #143660;
+    border-color: #143660;
+}

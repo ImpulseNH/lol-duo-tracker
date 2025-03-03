@@ -1,0 +1,20 @@
+<div class="match-history-container mt-5">
+    {% if common_matches and common_matches|length > 0 %}
+        <h2 class="text-center mb-4 text-white">Found <b>{{ common_matches|length }}</b> matches in common</h2>
+        
+        <div id="matches-container">
+            {% with match_offset=0 %}
+                {% include '_matches_partial.html' %}
+            {% endwith %}
+        </div>
+        
+    {% else %}
+        {% if form.is_submitted() %}
+            {% if found_summoners %}
+                <div class="text-center">
+                    <h2 class="text-white">No matches found for the specified summoners</h2>
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+</div>

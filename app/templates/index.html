@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Duo Tracker{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/match_history.css') }}">
+{% endblock %}
+
+{% block head %}
+{% if found_summoners %}
+<meta name="game-version" content="{{ current_game_version }}">
+<meta name="summoner1" content="{{ form.summoner1.data }}">
+<meta name="summoner2" content="{{ form.summoner2.data }}">
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center">Duo Tracker 🔎</h1>
+    <p class="text-center">Find common matches between two summoners, analyzing the last {{ settings.MAX_MATCH_LIST_SIZE }} matches</p>
+    
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <!-- Search form -->
+                    <form method="POST" action="{{ url_for('main.index') }}">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-3">
+                            {{ form.option.label(class="form-label") }}
+                            {{ form.option(class="form-select") }}
+                        </div>
+                        
+                        <!-- Summoner 1 input -->
+                        <div class="mb-3">
+                            {{ form.summoner1.label(class="form-label") }}
+                            {{ form.summoner1(class="form-control", placeholder="Gamename#TAG") }}
+                            {% if form.summoner1.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.summoner1.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Summoner 2 input -->
+                        <div class="mb-3">
+                            {{ form.summoner2.label(class="form-label") }}
+                            {{ form.summoner2(class="form-control", placeholder="Gamename#TAG") }}
+                            {% if form.summoner2.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.summoner2.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Submit button -->
+                        <div class="d-grid">
+                            {{ form.submit(class="btn btn-primary") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Error message -->
+            {% if error %}
+                <div class="alert alert-danger mt-4">
+                    {{ error }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Match history -->
+{% include '_match_history.html' %}
+
+{% endblock %}

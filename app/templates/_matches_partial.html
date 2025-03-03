@@ -1,0 +1,110 @@
+{% for match in common_matches %}
+    <div class="match-card mb-4">
+        <div class="match-header p-3 d-flex justify-content-between align-items-center">
+            <div class="match-info">
+                <h5>
+                    {% set queue_type = {
+                        400: "Normal (Draft)",
+                        420: "Solo/Duo",
+                        430: "Normal (Blind)",
+                        440: "Flex",
+                        450: "ARAM",
+                        700: "Clash",
+                        830: "Co-op vs AI",
+                        840: "Co-op vs AI",
+                        850: "Co-op vs AI",
+                        900: "URF",
+                        1020: "One for All",
+                        1300: "Nexus Blitz",
+                        1400: "Ultimate Spellbook"
+                    } %}
+                    {{ queue_type.get(match.info.queueId, match.info.gameMode) }}
+                </h5>
+                <small>{{ (match.info.gameDuration / 60)|int }} minutes</small>
+                <div class="match-time" title="{{ (match.info.gameStartTimestamp / 1000)|int|datetime }}">
+                    {{ get_time_ago(match.info.gameStartTimestamp) }}
+                </div>
+            </div>
+            
+            <!-- Information about the searched summoners -->
+            <div class="d-flex summoners-info gap-4">
+                {% for participant in match.info.participants %}
+                    {% if participant.puuid == form.summoner1_puuid.data or participant.puuid == form.summoner2_puuid.data %}
+                        <div class="d-flex align-items-center gap-2 {% if participant.teamId == 100 %}team-blue{% else %}team-red{% endif %}">
+                            <img src="https://ddragon.leagueoflegends.com/cdn/{{ current_game_version }}/img/champion/{{ participant.championName }}.png" 
+                                 alt="{{ participant.championName }}" 
+                                 width="50" height="50" 
+                                 class="champion-icon"
+                                 title="{{ participant.championName }}">
+                            <div>
+                                <div>{{ participant.riotIdGameName }}</div>
+                                <div class="kda-text">{{ participant.kills }}/{{ participant.deaths }}/{{ participant.assists }}</div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            
+            <!-- Button to expand/collapse details -->
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#match{{ loop.index + match_offset }}" aria-expanded="false">
+                View details
+            </button>
+        </div>
+        
+        <!-- Collapsible content -->
+        <div class="collapse" id="match{{ loop.index + match_offset }}">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Champion</th>
+                            <th>Summoner</th>
+                            <th>KDA</th>
+                            <th>CS</th>
+                            <th>Damage</th>
+                            <th>Items</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for team in match.info.teams %}
+                            <!-- Team header -->
+                            <tr class="team-header">
+                                <td colspan="7" class="{% if team.win %}bg-success{% else %}bg-danger{% endif %} text-white">
+                                    {{ "Victory" if team.win else "Defeat" }}
+                                </td>
+                            </tr>
+                            
+                            <!-- Team participants -->
+                            {% for participant in match.info.participants %}
+                                {% if participant.teamId == team.teamId %}
+                                <tr class="{% if participant.puuid == form.summoner1_puuid.data or participant.puuid == form.summoner2_puuid.data %}table-active{% endif %}">
+                                    <td>
+                                        <img src="https://ddragon.leagueoflegends.com/cdn/{{ current_game_version }}/img/champion/{{ participant.championName }}.png" 
+                                             alt="{{ participant.championName }}" 
+                                             width="40" height="40" 
+                                             title="{{ participant.championName }}">
+                                    </td>
+                                    <td>{{ participant.riotIdGameName }}#{{ participant.riotIdTagline }}</td>
+                                    <td>{{ participant.kills }}/{{ participant.deaths }}/{{ participant.assists }}</td>
+                                    <td>{{ participant.totalMinionsKilled + participant.neutralMinionsKilled }}</td>
+                                    <td>{{ participant.totalDamageDealtToChampions|int }}</td>
+                                    <td class="items-cell">
+                                        {% for i in range(0, 6) %}
+                                            {% set item_id = participant['item' ~ i] %}
+                                            {% if item_id > 0 %}
+                                                <img src="https://ddragon.leagueoflegends.com/cdn/{{ current_game_version }}/img/item/{{ item_id }}.png" 
+                                                     width="30" height="30" 
+                                                     alt="Item {{ item_id }}">
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endfor %} 
