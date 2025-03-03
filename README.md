@@ -96,16 +96,20 @@ In order for the app to work properly, you must obtain a valid Riot API key at [
    ```sh
    git clone https://github.com/ImpulseNH/lol-duo-tracker.git
    ```
-2. Install dependencies:
+2. Create a virtual enviroment
+   ```sh
+   python -m venv venv
+   ```
+3. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
-3. Create a `.env` file in the root directory with your Riot API key and Flask secret key:
+4. Create a `.env` file in the root directory with your Riot API key and Flask secret key:
    ```
    RIOT_API_KEY=your_api_key_here
    SECRET_KEY=your_secret_key_here
    ```
-4. Run the app:
+5. Run the app:
    ```bash
    python run.py
    ```
